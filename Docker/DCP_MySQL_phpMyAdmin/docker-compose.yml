@@ -1,0 +1,192 @@
+version: '3.7'
+
+networks:
+    lotus_net:
+        external: true #Khai báo mạng này đã có sẵn bên ngoài.
+    bridge:
+        external: true #Khai báo mạng này đã có sẵn bên ngoài.
+    default:
+        driver: bridge #Đây là mạng bridge nội bộ của compose đang chạy.
+
+services:
+  # #1. MySQL
+  # lotus_mysql:
+  #   image: mysql:8.0
+  #   container_name: lotus_mysql
+  #   environment:
+  #     - MYSQL_DATABASE=zabbix
+  #     - MYSQL_USER=user
+  #     - MYSQL_PASSWORD=user_123
+  #     - MYSQL_ROOT_PASSWORD=admin
+  #   networks:
+  #     lotus_net: #external network
+  #         ipv4_address: '100.100.100.2'
+  #     default: #internal default network
+  #   user: root
+  #   restart: always
+  #   command: --character-set-server=utf8 --collation-server=utf8_bin --default-authentication-plugin=mysql_native_password
+  
+  # #2. phpMyAdmin
+  # lotus_phpmyadmin:
+  #   image: phpmyadmin
+  #   container_name: lotus_phpmyadmin
+  #   user: root
+  #   restart: always
+  #   ports:
+  #     - 81:80 #http://192.168.60.168:8080/
+  #   links:
+  #     - 'lotus_mysql:db' #<Tên service>[:tạo alias cho service]. CHÚ Ý: Nếu tên service không sẵn là 'db' thì
+  #                        #alias name của mysql phải là 'db' vì code bên trong phpmyadmin sẽ tìm kiếm DB server theo tên này.
+  #   networks:
+  #     - 'default' #internal default network
+
+  # #3. MQTT broker
+  # lotus_mqtt:
+  #   image: eclipse-mosquitto
+  #   container_name: lotus_mqtt
+  #   user: root
+  #   restart: always
+  #   ports:
+  #     - 1883:1883 #MQTT
+  #     - 9001:9001 #MQTT over Websocket
+  #   networks:
+  #     lotus_net: #external network
+  #         ipv4_address: '100.100.100.3'
+  #     default: #internal default network
+
+  # #4. Socket.io
+  # lotus_socketio:
+  #   build: ./socketio/
+  #   image: lotus_socketio
+  #   container_name: lotus_socketio
+  #   user: root
+  #   restart: 'always'
+  #   networks:
+  #     lotus_net: #external network
+  #         ipv4_address: '100.100.100.4'
+  #     default: #internal default network
+  #   ports:
+  #     - 5000:5000
+  #   volumes:
+  #     - ~/HShare/:/HShare #Mount thư mục HShare vào container
+  #   working_dir: /HShare
+  #   command: "tail -f /dev/null"
+
+  # #5. Socket.io_Client
+  # lotus_socketio_client:
+  #   build: ./socketio/
+  #   image: lotus_socketio_client
+  #   container_name: lotus_socketio_client
+
+  #   user: root
+  #   restart: 'always'
+  #   networks:
+  #     lotus_net: #external network
+  #         ipv4_address: '100.100.100.5'
+  #     default: #internal default network
+  #   # ports:
+  #   #   - 5000:5000
+  #   volumes:
+  #     - ~/HShare/:/HShare #Mount thư mục HShare vào container
+  #   working_dir: /HShare
+  #   command: "tail -f /dev/null"
+
+  # #6. Python Test
+  # lotus_python_test:
+  #   build: ./python_test/
+  #   image: python_test
+  #   container_name: python_test
+  #   environment:
+  #       # - 'DISPLAY=host.docker.internal:0'
+  #       COMPOSER_ALLOW_SUPERUSER: 1
+  #   user: root
+  #   privileged: true #Cấp quyền sử dụng tài nguyên máy host cho container
+  #   restart: 'always'
+  #   networks:
+  #     lotus_net: #external network
+  #         ipv4_address: '100.100.100.6'
+  #     default: #internal default network
+  #   volumes:
+  #     - ~/HShare/:/HShare #Mount thư mục HShare vào container
+  #   working_dir: /HShare/LOTUS_Python_Framework
+  #   command: "tail -f /dev/null"
+
+  # #7. pyAutoGUI Server
+  # selenium_server_test:
+  #   build: ./selenium_server/
+  #   image: selenium_server_test
+  #   container_name: selenium_server
+  #   environment:
+  #       # - 'DISPLAY=host.docker.internal:0'
+  #       COMPOSER_ALLOW_SUPERUSER: 1
+  #   user: root
+  #   privileged: true #Cấp quyền sử dụng tài nguyên máy host cho container
+  #   restart: 'always'
+  #   networks:
+  #     lotus_net: #external network
+  #         ipv4_address: '100.100.100.7'
+  #     default: #internal default network
+  #   ports:
+  #     - 4444:4444
+  #     - 5900:5900
+  #     - 5901:5901
+  #   volumes:
+  #     - ~/HShare/:/HShare #Mount thư mục HShare vào container
+  #   working_dir: /HShare/LOTUS_Python_Framework
+  #   command: 
+  #     tail -f /dev/null
+      
+  #8. Selenium Server
+  selenium_server:
+    image: selenium/standalone-chrome
+    container_name: selenium_server
+    shm_size: 2gb
+    ports:
+      - 4444:4444
+      - 7900:7900
+    restart: 'always'
+    networks:
+      lotus_net: #external network
+          ipv4_address: '100.100.100.8'
+      default: #internal default network
+    volumes:
+      - 'D:/Database/GIT/LOTUS_Python_Framework:/HShare' #Mount thư mục HShare vào container
+    working_dir: /HShare
+
+  #9. Python Test
+  lotus_python_test:
+    build: ./python_test/
+    image: python_test
+    shm_size: 2gb
+    container_name: python_test
+    networks:
+      lotus_net: #external network
+          ipv4_address: '100.100.100.9'
+      default: #internal default network
+    volumes:
+      - 'D:/Database/GIT/LOTUS_Python_Framework:/HShare' #Mount thư mục HShare vào container
+      - '/dev/shm:/dev/shm'
+    working_dir: /HShare
+    depends_on:
+      - selenium_server
+    command: 
+      tail -f /dev/null
+
+  #10. Python Test 2
+  lotus_python_test2:
+    build: ./python_test/
+    image: python_test
+    shm_size: 2gb
+    container_name: python_test2
+    networks:
+      lotus_net: #external network
+          ipv4_address: '100.100.100.10'
+      default: #internal default network
+    volumes:
+      - 'D:/Database/GIT/LOTUS_Python_Framework:/HShare' #Mount thư mục HShare vào container
+      - '/dev/shm:/dev/shm'
+    working_dir: /HShare
+    depends_on:
+      - selenium_server
+    command: 
+      tail -f /dev/null

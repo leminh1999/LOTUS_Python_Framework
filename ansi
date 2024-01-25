@@ -1,0 +1,35 @@
+#!/bin/bash
+
+echo -e "✨BackGround Color✨ \x1b[48;5;0m\\\x1b[48;5;\x1b[48;5;1m?\x1b[48;5;0mm\x1b[0m"
+for i in {0..15}; do
+  for j in {0..15}; do
+    code1=$((i * 16 + j))
+    if [ $code1 -lt 10 ]; then
+        code2="  $code1"
+    elif [ $code1 -lt 100 ]; then
+        code2=" $code1"
+    else
+        code2="$code1"
+    fi
+    echo -e "\x1b[48;5;${code1}m${code2} \x1b[0m" | tr -d '\n'
+  done
+  echo
+done
+
+echo -e "✨ForeGround Color✨ \x1b[48;5;0m\\\x1b[38;5;\x1b[48;5;1m?\x1b[48;5;0mm\x1b[0m"
+for i in {0..15}; do
+  for j in {0..15}; do
+    code1=$((i * 16 + j))
+    if [ $code1 -lt 10 ]; then
+        code2="  $code1"
+    elif [ $code1 -lt 100 ]; then
+        code2=" $code1"
+    else
+        code2="$code1"
+    fi
+    echo -e "\x1b[38;5;${code1}m${code2}\x1b[0m" | tr -d '\n' && printf " "
+  done
+  echo
+done
+
+echo -e "✨Reset✨ \x1b[48;5;0m\\\x1b[0m\x1b[0m"

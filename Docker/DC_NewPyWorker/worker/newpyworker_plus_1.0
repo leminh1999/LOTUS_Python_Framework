@@ -1,0 +1,22 @@
+# A. Hàm build & update image:
+# 1. docker build -f newpyworker_plus_1.0 -t meomay22/newpyworker_plus:1.0 .
+# 2. docker push meomay22/newpyworker_plus:1.0
+# B. Update:
+# 1. Cập nhật file startup.sh để chạy lệnh vncserver
+# 2. Cập nhật vnPass để đăng nhập vào vncserver
+FROM meomay22/newpyworker
+
+USER root
+ADD startup.sh /etc/profile.d/startup.sh
+RUN chmod +x /etc/profile.d/startup.sh
+ADD vncPass /root/.vnc/passwd
+RUN chmod 600 /root/.vnc/passwd
+
+
+
+
+
+
+
+
+

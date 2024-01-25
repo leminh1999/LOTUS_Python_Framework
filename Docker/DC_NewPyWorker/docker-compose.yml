@@ -1,0 +1,106 @@
+version: "3.7"
+services:
+  #######################################################
+  #1. MySQL
+  lotus_mysql:
+    image: mysql
+    container_name: lotus_mysql
+    environment:
+      - MYSQL_USER=bot
+      - MYSQL_PASSWORD=xI2@z63pa@
+      - MYSQL_ROOT_PASSWORD=admin
+      - TZ=Asia/Saigon
+    networks:
+      default: #internal default network
+        ipv4_address: '200.200.200.1'
+    ports:
+      - 3306:3306 #http://localhost:3306
+    volumes:
+      - 'mysql_data:/var/lib/mysql'      #Liên kiết database với Volume mysql_data
+      - 'D:/Database/SynologyDrive/Biz/MySQL_Backups:/db_backup' #Backup database vào thư trên ổ Synology
+    user: root
+    restart: always
+    # --character-set-server=utf8 --collation-server=utf8_bin --default-authentication-plugin=mysql_native_password 
+    command: /bin/bash -l -c "sleep 10 && sh /db_backup/mysqlBackupScript.sh & mysqld --character-set-server=utf8 --collation-server=utf8_bin --default-authentication-plugin=mysql_native_password"
+            
+            
+
+  #######################################################
+  #2. phpMyAdmin
+  lotus_phpmyadmin:
+    image: phpmyadmin
+    container_name: lotus_phpmyadmin
+    user: root
+    restart: always
+    ports:
+      - 1000:80 #http://localhost:80
+    links:
+      - 'lotus_mysql:db' #<Tên service>[:tạo alias cho service]. CHÚ Ý: Nếu tên service không sẵn là 'db' thì
+                         #alias name của mysql phải là 'db' vì code bên trong phpmyadmin sẽ tìm kiếm DB server theo tên này.
+    networks:
+      default: #internal default network
+        ipv4_address: '200.200.200.2'  
+  ######################################################
+#   #3. Worker
+#   newpyworker1:
+#     build: ./worker/
+#     image: newpyworker
+#     container_name: newpyworker1
+#     shm_size: '512M' #Share memory size. Dùng cho Chrome. Nếu không có thì Chrome sẽ bị crash hoặc chạy với khai báo không xài shm memory (--disable-dev-shm-usage)
+#                      #Ex (Không shm_size): google-chrome --disable-dev-shm-usage --no-sandbox --disable-infobars --window-position=0,0 --window-size=1920,1080
+#                      #CHÚ Ý: Với các máy chạy Chrome thì nền đựt shm_size vì chrome khi chạy nếu tự chiếm nhiều hơn memory sẽ scrash -> Container chạy lại đề không ảnh hưởng đến các container khác.
+#     ports:
+#       - "55901:5901"
+#     user: root
+#     privileged: true
+#     restart: always
+#     volumes:
+#       - 'D:/Database/GIT/LOTUS_Python_Framework/Docker/DC_NewPyWorker/worker/startup.sh:/etc/profile.d/startup.sh' #Mount thư mục HShare vào container
+#       - 'D:/Database/GIT/LOTUS_Python_Framework/Docker/DC_NewPyWorker/worker/vncPass:/root/.vnc/passwd' #Mount thư mục HShare vào container
+#       - 'D:/Database/GIT/LOTUS_Python_Framework:/HShare' #Mount thư mục HShare vào container
+#       - 'D:/Biz/GX_DATA/vn_20_scanned_list:/vn_20_scanned_list' #Thư mục chứa các video được tải về
+#       - 'D:/Biz/GX_DATA/vn_30_ready_list:/vn_30_ready_list' #Thư mục chứa các video đã được duyệt
+#       - 'D:/Biz/GX_DATA/processing:/processing' #Thư mục đang được xử lý để tạo video
+#       - 'D:/Database/GIT/LOTUS_Python_Framework/.bashrc:/root/.bashrc' #Mount .bashrc vào container
+#     working_dir: /HShare/Docker/DC_NewPyWorker
+#     networks:
+#       default: #internal default network
+#         ipv4_address: '200.200.200.3'
+#     environment:
+#       - DISPLAY_MODE=VNC_DISPLAY        #VNC_DISPLAY/XVFB_DISPLAY
+#       - LOTUS_DISPLAY_VNC_VIEW_ONLY=NO   #YES/NO
+#       - USER=root
+#       - LOTUS_DISPLAY_WIDTH=1920
+#       - LOTUS_DISPLAY_HEIGHT=1080
+#       - LOTUS_DISPLAY_DEPTH=24
+# #  
+#     hostname: newpyworker1
+#     depends_on:
+#       - lotus_mysql
+#     # EX: command: >
+#     #   /bin/bash -l -c "python manage.py wait_for_db &&            #Chạy đầu tiên.
+#     #                    python manage.py migrate &&                #Chạy thứ 2
+#     #                    python manage.py runserver 0.0.0.0:8000"   #Chạy thứ 3
+#     #/bin/bash -l sẽ: Mở Shell với Login và chạy /etc/profile.d/startup.sh.
+#     #tail -f /dev/null để container không bị dừng lại.
+#     # command: /bin/bash -l -c "python3 /HShare/Docker/DC_NewPyWorker/app/seleniumHub_test.py &&
+#     #                           tail -f /dev/null"
+#     # command: /bin/bash -l -c "python3 /HShare/MyAPP/TiktopApp/GX/1_SCAN_GX_APP.py &&
+#                               # tail -f /dev/null"
+#     command: /bin/bash -l -c "tail -f /dev/null"
+  #######################################################
+
+#docker network create --driver bridge --subnet=200.200.0.0/16 --ip-range=200.200.200.0/24 --gateway=200.200.0.1 newpyworker_network
+networks:
+  default:
+      name: newpyworker_network
+      driver: bridge
+      ipam:
+          driver: default
+          config:
+              - subnet: '200.200.0.0/16'
+                ip_range: '200.200.200.0/24'
+
+volumes:
+  mysql_data:
+  mysql_db_backup:

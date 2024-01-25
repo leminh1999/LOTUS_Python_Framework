@@ -1,0 +1,27 @@
+# A. Hàm build & update image:
+# 1. docker build -f newpyworker_plus_1.1 -t meomay22/newpyworker_plus:1.1 .
+# 2. docker push meomay22/newpyworker_plus:1.1
+# B. Update:
+# 1. Cập nhật chrome driver version 112.0.5615.49
+# 2. Cập nhật chrome deb version 112.0.5615.49 cho ubuntu 20.04
+# 3. Cài đặt thư viện undetected_chromedriver==3.4.6 cho phép đăng nhập vào gmail từ Chrome driver (112.0.5615.49)
+FROM meomay22/newpyworker_plus:1.0
+
+USER root
+RUN apt update
+
+#Cài đặt thư viện cho phép đăng nhập vào gmail từ Chrome driver
+RUN pip install undetected_chromedriver==3.4.6
+
+#Copy chrome driver version 112 from: https://chromedriver.chromium.org/downloads
+ADD ./chrome_Deb_Driver/chromedriver_112 /usr/local/bin/chromedriver
+RUN chmod +x /usr/local/bin/chromedriver
+
+#Chrome deb version 112 cho ubuntu 20.04. Tải từ: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+ADD ./chrome_Deb_Driver/google-chrome-stable_current_amd64_112.deb /chrome_Deb_Driver/chrome.deb
+RUN dpkg -i /chrome_Deb_Driver/chrome.deb || apt-get install --fix-missing -yf
+RUN rm -f /chrome_Deb_Driver/chrome.deb
+
+
+
+

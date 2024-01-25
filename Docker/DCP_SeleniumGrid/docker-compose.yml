@@ -1,0 +1,93 @@
+version: "3.7"
+
+services:
+  selenium-hub:
+    image: selenium/hub:4.7.2-20221219
+    container_name: selenium-hub
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+
+  # selenium-chrome1:
+  #   image: selenium/node-chrome:4.7.2-20221219
+  #   shm_size: '2gb'
+  #   ports:
+  #     - "15900:5900"
+  #     # - "17900:7900"
+  #   # user: root
+  #   depends_on:
+  #     - selenium-hub
+  #   environment:
+  #     - SE_EVENT_BUS_HOST=selenium-hub
+  #     - SE_EVENT_BUS_PUBLISH_PORT=4442
+  #     - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+  #     - SE_VNC_NO_PASSWORD=1 #Không yêu cầu password
+  #     - SE_NODE_SESSION_TIMEOUT=300
+
+  # selenium-chrome2:
+  #   image: selenium/node-chrome:4.7.2-20221219
+  #   shm_size: '2gb'
+  #   ports:
+  #     - "25900:5900"
+  #     # - "27900:7900"
+  #   depends_on:
+  #     - selenium-hub
+  #   environment:
+  #     - SE_EVENT_BUS_HOST=selenium-hub
+  #     - SE_EVENT_BUS_PUBLISH_PORT=4442
+  #     - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+  #     - SE_VNC_NO_PASSWORD=1 #Không yêu cầu password
+  #     - SE_NODE_SESSION_TIMEOUT=300
+
+  selenium_node_sal:
+    build: ./selenium_node_sal/
+    image: selenium_node_sal
+    container_name: selenium_node_sal
+    shm_size: '512M'
+    ports:
+      - "35900:5900"
+      # - "37900:7900"
+    # user: root
+    depends_on:
+      - selenium-hub
+    environment:
+      #THAM KHAO PARAMETER: https://github.com/SeleniumHQ/docker-selenium
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_INSTANCES=1
+      - SE_NODE_MAX_SESSIONS=1
+      - SE_SCREEN_WIDTH=1920
+      - SE_SCREEN_HEIGHT=1080
+      - SE_SCREEN_DEPTH=24
+      - SE_SCREEN_DPI=96
+      - SE_NODE_SESSION_TIMEOUT=300
+      # - START_XVFB=false #Headless mode
+      - SE_VNC_NO_PASSWORD=1 #Không yêu cầu password
+      # - SE_VNC_VIEW_ONLY=1 #Không cho phép điều khiển từ xa
+    volumes:
+      - 'D:/Database/GIT/LOTUS_Python_Framework:/HShare' #Mount thư mục HShare vào container
+    working_dir: /HShare
+
+  test1:
+    build: ./python_test/
+    image: python_test
+    container_name: python_test1
+    volumes:
+      - 'D:/Database/GIT/LOTUS_Python_Framework:/HShare' #Mount thư mục HShare vào container
+    working_dir: /HShare
+    command: 
+      tail -f /dev/null
+
+networks:
+  default:
+      name: end-to-end-test
+      driver: bridge
+      ipam:
+          driver: default
+          config:
+              - subnet: '100.200.0.0/16'
+                ip_range: '100.200.200.0/24'
+
+# docker run -tid --name chromeNodeTest -p 35900:5900 -p 37900:7900 -v D:\Database\GIT\LOTUS_Python_Framework:/HShare selenium/node-chrome sh

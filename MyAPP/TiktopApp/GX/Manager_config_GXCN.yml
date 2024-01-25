@@ -1,0 +1,107 @@
+common_arg: #Các tham số có truyền vào script (Argument)
+  MYSQL_DB: "tik_vn_gx_1"
+
+common_docker:
+  - "docker run -tid"                                                          #Create Container
+  - "--rm"                                                                     #Remove container after stop
+  - "--network=newpyworker_network"                                            #Network name
+  - "-u root --privileged"                                                     #Run as root
+  - "-v <REPLACED_CONTAINER_DIR>/code/MyAPP/TiktopApp/GX/startup.sh:/etc/profile.d/startup.sh" #Startup Script
+  - "-v <REPLACED_CONTAINER_DIR>/code/MyAPP/TiktopApp/GX/vncPass:/root/.vnc/passwd"            #VNC Password
+  # - "-v <REPLACED_CONTAINER_DIR>/code/MyAPP/TiktopApp/GX/bashrc:/root/.bashrc"                #Bashrc
+  - "-v <REPLACED_ROOT_MAN_DIR>/data:/HShare/data"                             #Host Share
+  - "-v <REPLACED_CONTAINER_DIR>/code:/HShare/code"                            #Code
+  - "-v <REPLACED_CONTAINER_DIR>/code/MyAPP:/MyAPP"                            #Dùng để hiển thị các file ảnh trong thư viện.
+  - "-v <REPLACED_CONTAINER_DIR>/../0_AllContainers:/HShare/0_AllContainers"   #All Containers
+  - "-v <REPLACED_CONTAINER_DIR>/../../0_AllTasks:/HShare/0_AllTasks"          #All Containers
+  - "-v <REPLACED_CONTAINER_DIR>/../../../0_AllChannels:/HShare/0_AllChannels" #All Containers
+  - "-w <REPLACED_LOCAL_CODE_DIR>"                                             #Working Directory
+  - "-e DISPLAY_MODE=VNC_DISPLAY"                                              #Display Mode: XVFB_DISPLAY, VNC_DISPLAY
+                                                                               #Priority: 1. Force (In MySQL Table) 2. Docker Task 3. Common Default
+  - "-e HOST_HOSTNAME=<REPLACED_HOSTNAME>"                                     #Hostname of host
+  - "-e USER=root"                                                             #User
+  - "-e LOTUS_DISPLAY_WIDTH=1920"                                              #Display Width
+  - "-e LOTUS_DISPLAY_HEIGHT=1080"                                             #Display Height
+  - "-e LOTUS_DISPLAY_DEPTH=24"                                                #Display Depth
+  - "-e LOTUS_DISPLAY_VNC_VIEW_ONLY=NO"                                        #VNC View Only: YES/NO
+  - "-e CONTAINER_NAME=<REPLACED_CONTAINER_NAME>"                              #Container Name
+  - "<REPLACED_IN_MANAGER>"                                                    #THIS WILL BE REPLACED IN MANAGER (Ex: --name=gx_task1_randomId_123456)
+
+
+task_1: #Scan -> Scan all base on keys in table_10
+  task_enable: 1 #Enable Task: 1/0
+  docker: #NOTE: -e, -w => overwrite. -v, -p => append.
+    - "--shm-size=2g" #Shared Memory Size
+    - "newpyworker:latest"                           #Image name
+    - "/bin/bash -l -c \"python3 <REPLACED_LOCAL_CODE_DIR>/MyAPP/TiktopApp/GX/1_SCAN_GX_APP.py \"" #Argument lưu ở 0_AllTasks/task_x_agrs.json. Được tạo ra bở <common_arg> và <crontab.arg>
+    # - "/bin/bash -l -c \"tail -f /dev/null\"" #Argument lưu ở 0_AllTasks/task_x_agrs.json. Được tạo ra bở <common_arg> và <crontab.arg>
+
+  crontab: #Các tham số có truyền vào container
+    time: "0 * * * *" #https://crontab.guru/. 0 0 * * * = every day at 00:01
+    sleep: RAN(60) #0/12/RAN(60) #Sleep in crontab before run
+    arg: #Các tham số có truyền vào script (Argument)
+      DELAY: "0" #0/12/30/RAN(3600) #Delay when run
+
+task_2: #Download -> Download all base on links in table_20
+  task_enable: 1 #Enable Task: 1/0
+  docker:
+    - "--shm-size=2g" #Shared Memory Size
+    - "newpyworker:latest"                           #Image name
+    - "/bin/bash -l -c \"python3 <REPLACED_LOCAL_CODE_DIR>/MyAPP/TiktopApp/GX/2_DOWNLOAD_GX_APP.py\"" #Argument lưu ở 0_AllTasks/task_x_agrs.json. Được tạo ra bở <common_arg> và <crontab.arg>
+  crontab: #Các tham số có truyền vào container
+    time: "10 * * * *" #https://crontab.guru/. 0 2 * * * = every day at 02:02
+    sleep: RAN(60) #0/12/RAN(60) #Sleep in crontab before run
+    arg: #Các tham số có truyền vào script (Argument)
+      DELAY: "0" #0/12/30/RAN(3600) #Delay when run
+      SCANNED_LIST: "/HShare/0_AllTasks/0_scanned_list" #Scanned List
+      READY_LIST_PATH: "/HShare/0_AllTasks/1_ready_list" #Ready List
+      MAX_BIND_DOWNLOAD: "20" #Số lượng video dạng bind được download về folder local. Sẵn sàng cho việc publish.
+
+task_3: #Approval -> Update table_30 after approval.
+  task_enable: 1 #Enable Task: 1/0
+  docker:
+    # - "--shm-size=256m" #Shared Memory Size
+    - "newpyworker:latest"                           #Image name
+    - "/bin/bash -l -c \"python3 <REPLACED_LOCAL_CODE_DIR>/MyAPP/TiktopApp/GX/3_UPDATE_READY_LIST.py\"" #Argument lưu ở 0_AllTasks/task_x_agrs.json. Được tạo ra bở <common_arg> và <crontab.arg>
+  crontab: #Các tham số có truyền vào container
+    time: "20 * * * *" #https://crontab.guru/. 0 4 * * * = every day at 04:03
+    sleep: RAN(60) #0/12/RAN(60) #Sleep in crontab before run
+    arg: #Các tham số có truyền vào script (Argument)
+      DELAY: "0" #0/12/30/RAN(3600) #Delay when run
+      READY_LIST_PATH: "/HShare/0_AllTasks/1_ready_list" #Ready List
+
+# task_4: #Publish
+#   task_enable: 1 #Enable Task: 1/0
+#   docker:
+#     - "--shm-size=2g" #Shared Memory Size
+#     - "newpyworker:latest"                           #Image name
+#     - "/bin/bash -l -c \"python3 <REPLACED_LOCAL_CODE_DIR>/MyAPP/TiktopApp/GX/4_PUBLISH_GX_APP.py\"" #Argument lưu ở 0_AllTasks/task_x_agrs.json. Được tạo ra bở <common_arg> và <crontab.arg>
+#   crontab: #Các tham số có truyền vào container
+#     time: "30 7-23 * * *" #https://crontab.guru/. 0 7-23/2 * * * = every 2 hours from 07:04 to 23:04
+#     sleep: RAN(60) #0/12/RAN(60) #Sleep in crontab before run
+#     arg: #Các tham số có truyền vào script (Argument)
+#       DELAY: "0" #0/12/30/RAN(3600) #Delay when run
+#       APP_USER: "tranhuudung1986"
+#       APP_PASS: "H@@n24687"
+#       READY_LIST_PATH: "/HShare/0_AllTasks/1_ready_list" #Ready List
+#       CLIP_CAPTION: "❤ Nancy ❤ #nancy #momoland #gaixinh #xuhuong #foryou #fyp" #Caption
+#       CLIP_HASHTAG: "" #Hashtag
+#       CLIP_MODE: "PUBLIC" #PUBLIC/PRIVATE
+
+# task_5: #Remove old post
+#   task_enable: 1 #Enable Task: 1/0
+#   docker:
+#     - "--shm-size=2g" #Shared Memory Size
+#     - "newpyworker:latest"                           #Image name
+#     - "/bin/bash -l -c \"python3 <REPLACED_LOCAL_CODE_DIR>/MyAPP/TiktopApp/GX/5_REMOVE_OLD_POST_GX_APP.py\"" #Argument lưu ở 0_AllTasks/task_x_agrs.json. Được tạo ra bở <common_arg> và <crontab.arg>
+#   crontab: #Các tham số có truyền vào container
+#     time: "40 7-23 * * *" #https://crontab.guru/. 0 7-23/2 * * * = every 2 hours from 07:04 to 23:04
+#     sleep: RAN(60) #0/12/RAN(60) #Sleep in crontab before run
+#     arg: #Các tham số có truyền vào script (Argument)
+#       DELAY: "0" #0/12/30/RAN(3600) #Delay when run
+#       GOOGLE_USER: "tranhuudung1986"
+#       GOOGLE_PASS: "H@@n24687"
+#       PROFILE_NAME: "nancy.love2023" #www.tiktok.com/@<PROFILE_NAME>
+#       CLIP_LIMIT_HOURS: "100" #Giới hạn số giờ tồn tại của post. Nếu post cũ hơn giới hạn này thì sẽ bị xóa.
+#       DEL_NOT_SYNC_CLIP: "TRUE" #TRUE/FALSE. Xóa các clip Tiktok có nhưng không có ở MySQL và ngược lại.
+

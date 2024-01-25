@@ -1,0 +1,48 @@
+{
+  "id": "5635c05f-d1f8-418f-b407-b3ae4295248f",
+  "version": "2.0",
+  "name": "scanList",
+  "url": "https://www.tiktok.com",
+  "tests": [{
+    "id": "02e7d445-cde2-4970-b887-58582065d3fa",
+    "name": "scanList",
+    "commands": [{
+      "id": "8569b106-b837-4bf8-9bf2-6d65527eeb08",
+      "comment": "",
+      "command": "open",
+      "target": "/search?q=nancy",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "acc6d039-15d0-48d9-b048-4967be124aa7",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1066x692",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "8455b31a-c704-4c19-8fee-55857ed24b0b",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.tiktok-zbo8c5-ButtonMore",
+      "targets": [
+        ["css=.tiktok-zbo8c5-ButtonMore", "css:finder"],
+        ["xpath=(//button[@type='button'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='app']/div[2]/div[2]/div[2]/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Tải thêm')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "7dfe0258-c722-45d7-b82c-2bb996c9de58",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["02e7d445-cde2-4970-b887-58582065d3fa"]
+  }],
+  "urls": ["https://www.tiktok.com/"],
+  "plugins": []
+}

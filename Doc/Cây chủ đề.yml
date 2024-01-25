@@ -1,0 +1,51 @@
+#Cây chủ đề
+ChuDe:
+  - 0.QuanSuVaChinhTri:
+    - 0.US_ARMY
+    - 1.RUSSIA_ARMY
+    - 2.VU_KHI_QUAN_SU
+    - 3.NHAN_VAT:             #<----- Sẽ lấy toàn bộ list bên dưới làm dữ liệu random.
+      - 0.PUTIN
+      - 1.TAPCANBINH
+      - 2.US_PRESIDENT:
+        - 0.DONAL_TRUMP
+        - 1.BIDEN
+      - 3.TUONG_TAI_QUAN_SU: null
+  - 1.VanHoaGiaiTri: null
+    - 0.
+  - 2.ThucPhamVaDoUong: null
+  - 3.LamDepVaThoiTrang: null
+  - 4.KhoaHocVaGiaoDuc: null
+  - 5.TheThao:
+    - 0.BongDa
+      - 0.NhanVat
+        - 0.Messi
+        - 1.CR7
+        - 2.Halland
+        - 3.Mbappe
+        - 4.Maradona
+        - 5.Neymar
+      - 1.ChauAu     #C1, C2, League 1
+      - 2.ChauA      #VN
+      - 3.KhoanhKhacBongDa #BongDep, HaiHuoc
+    - 1.Tennis
+    - 2.BongRo
+  - 6.Game:
+    - 0.LienQuanHuyenThoai
+    - 1.LienQuanMobi
+  - 7.NguoiNoiTieng: null
+  - 8.PhimVaTruyenHinh: null
+  - 9.MeoHayTrongCuocSong: null
+  - 10.DiyVaMeoVat: null
+  - 11.ThuCung: null
+  - 12.AmNhac: null
+  - 13.NgheThuat: null
+  - 14.GymVaSucKhoe: null
+  - 15.OtoVaXeCo: null
+  - 16.NhaVaVuon: null
+  - 17.DuLich: null
+  - 18.DongLucVaLoiKhuyen: null
+  - 19.AsmrVaSlime: null
+  
+
+

@@ -1,0 +1,21 @@
+# A. Hàm build & update image:
+# 1. docker build -f newpyworker_plus_1.2 -t meomay22/newpyworker_plus:1.2 .
+# 2. docker push meomay22/newpyworker_plus:1.2
+# B. Update:
+# 1. Cài đặt gói p7zip-full để nén/giải nén file .7z
+# 2. Copy User data (/root/.config/google-chrome) của Chrome vào Image. USer data gồm:
+#    2.1 Các extension đã cài đặt: surfshark (Đã đăng nhập tài khoản Surfshark - tranhuudung1986@gmail.com)
+#    2.2 Tài khoản Google + gmail (esshop.vn@gmail.com) đã đăng nhập sẵn cho đa mục đích.
+FROM meomay22/newpyworker_plus:1.1
+
+USER root
+RUN apt install -y p7zip-full
+
+ADD ./ChromeUserProfile/google-chrome_V1.0 /root/.config/google-chrome
+
+
+
+
+
+
+

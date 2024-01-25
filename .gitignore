@@ -1,0 +1,16 @@
+Logs
+Docker/DC_NewPyWorker/app/mySql_Database
+Docker/DC_NewPyWorker/worker/chrome_Deb_Driver
+Docker/DC_NewPyWorker/worker/ChromeUserProfile
+.vscode
+# __pycache__
+# SystemManager/__pycache__
+# Conf/__pycache__
+# Library/A3_Selenium/Components/__pycache__
+# Library/A2_LOTUS/Components/__pycache__
+# Library/A2_LOTUS/Components/__pycache__
+# Conf/__pycache__
+__pycache__/
+*/__pycache__/*
+**/__pycache__/
+.pc157DebugVscodeServer

@@ -1,0 +1,55 @@
+{
+  "id": "b1cdc170-c630-4211-9789-9b3e0a58c710",
+  "version": "2.0",
+  "name": "ScanList",
+  "url": "https://www.tiktok.com",
+  "tests": [{
+    "id": "5c133876-e6ee-4415-a456-462a927d6435",
+    "name": "ScanSearchList",
+    "commands": [{
+      "id": "47ec4e14-801d-4039-b691-e76a9f4dd2ea",
+      "comment": "",
+      "command": "open",
+      "target": "/search?q=cartoon",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f4dc0431-5266-41f2-b369-b20624fb3b54",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1160x692",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a02d3c6d-c2ad-4775-83e2-3fd5a50d97a5",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.tiktok-1mwtjmv-ButtonMore",
+      "targets": [
+        ["css=.tiktok-1mwtjmv-ButtonMore", "css:finder"],
+        ["xpath=(//button[@type='button'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='app']/div[2]/div[2]/div[2]/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Load more')]", "xpath:innerText"]
+      ],
+      "value": "30000"
+    }, {
+      "id": "214d24f6-9a7e-4c80-9066-1045018ce096",
+      "comment": "",
+      "command": "click",
+      "target": "css=.tiktok-1mwtjmv-ButtonMore",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "e585f7f4-73a0-4896-b71a-43f6fe72ae40",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["5c133876-e6ee-4415-a456-462a927d6435"]
+  }],
+  "urls": ["https://www.tiktok.com/"],
+  "plugins": []
+}

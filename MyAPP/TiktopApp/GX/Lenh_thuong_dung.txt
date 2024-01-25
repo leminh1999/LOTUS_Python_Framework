@@ -1,0 +1,11 @@
+#Liệt kê các gói cài đặt đang lỗi thời.
+pip3 list --outdate
+
+#Kiểm tra public IP
+curl ifconfig.me
+
+#Nén file bởi 7z (Nén thư mục User Profile của Google Chrome và lưu vào thư mục /home/user/)
+7z a /HShare/ChromeProfileMan/tiktok_great.putin@lotushome.org.7z /root/.config/google-chrome/Default
+
+#Giải nén file 7z và lưu ngược vào thư mục /root/.config/
+7z x /HShare/ChromeProfileMan/tiktok_great.putin@lotushome.org.7z -o/root/.config/google-chrome -y

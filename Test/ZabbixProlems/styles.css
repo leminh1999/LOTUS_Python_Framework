@@ -1,0 +1,35 @@
+.status-dot {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 10px;
+}
+.active {
+  background-color: rgb(0, 200, 0);
+  animation: blinkGreen 2s infinite;
+}
+.inactive {
+  background-color: red;
+  animation: blinkRed 2s infinite;
+}
+@keyframes blinkGreen {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0.3;
+  }
+}
+@keyframes blinkRed {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0.3;
+  }
+}
+b {
+  /* font-weight: bold; */
+  font-size: 1.3em;
+}

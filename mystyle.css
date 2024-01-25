@@ -1,0 +1,105 @@
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  font-stretch: normal;
+  src: url(https://fonts.gstatic.com/s/opensans/v34/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsiH0B4gaVc.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: normal;
+  src: url(https://fonts.gstatic.com/s/opensans/v34/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjr0B4gaVc.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: normal;
+  src: url(https://fonts.gstatic.com/s/opensans/v34/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsgH1x4gaVc.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: normal;
+  src: url(https://fonts.gstatic.com/s/opensans/v34/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsg-1x4gaVc.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 800;
+  font-stretch: normal;
+  src: url(https://fonts.gstatic.com/s/opensans/v34/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgshZ1x4gaVc.ttf) format('truetype');
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  color: #2d3a51;
+  line-height: 1.4;
+  padding: 0.5rem;
+}
+.alert {
+  position: relative;
+  padding: 0;
+  min-width: 250px;
+}
+.alert button.close {
+  margin: 0.45rem 1rem;
+  opacity: 0.75;
+}
+.alert button.close:hover {
+  opacity: 1;
+}
+.alert-icon,
+.alert-text {
+  display: table-cell;
+  vertical-align: middle;
+}
+.alert-icon {
+  min-width: 40px;
+  text-align: center;
+  font-size: 2.2rem;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.25);
+  padding: 1rem;
+}
+.alert-text {
+  color: #2d3a51;
+  padding: 2.4rem;
+  width: 100%;
+}
+.alert-text > h5 {
+  margin-top: 0;
+  font-weight: 600;
+}
+.alert .alert-link {
+  font-weight: normal;
+  color: #4790e6;
+}
+.alert ul {
+  margin: 0;
+}
+.alert ul li {
+  margin-bottom: 0.2rem;
+}
+.alert ul li:last-child {
+  margin-bottom: 0;
+}
+.alert-warning {
+  background-color: #fff8f5;
+  border-color: #ffccb3;
+}
+.alert-warning .alert-text h5 {
+  color: #ff5400;
+}
+.alert-warning button.close {
+  color: #ff5400;
+}
+.alert-warning .alert-icon {
+  background-color: #ff5400;
+}

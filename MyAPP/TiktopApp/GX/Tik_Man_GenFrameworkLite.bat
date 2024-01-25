@@ -1,0 +1,1 @@
+python "D:\Database\SynologyDrive\GIT\LOTUS_Python_Framework\MyAPP\TiktopApp\GX\0_GenLotusLiteStruture.py"

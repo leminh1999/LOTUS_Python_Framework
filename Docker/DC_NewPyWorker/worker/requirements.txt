@@ -1,0 +1,18 @@
+pytweening              #for mouse movement
+python-xlib==0.27
+requests==2.24.0        #for http requests
+opencv-python==4.7.0.68 #for image processing
+PyVirtualDisplay==0.2.5 #for headless browser
+pyscreenshot==1.0       #for screenshot
+pillow                  #for image processing
+selenium==3.141.0       #for browser automation
+pyautogui==0.9.53
+keyboard
+pyperclip               #for clipboard
+crontab                 #(for scheduling)
+psutil                  #(for cpu usage)
+mysql-connector-python  #for mysql database connection
+numpy
+sib_api_v3_sdk          #for sending email
+bs4                     #Beautisoup4 for parsing html
+lxml                    #for parsing html

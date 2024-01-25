@@ -1,0 +1,24 @@
+# A. Hàm build & update image:
+# 1. Đứng tại thư mục: cd LOTUS_Python_Framework\Docker\DC_NewPyWorker\worker
+# 2. docker build -f newpyworker_plus_1.4 -t meomay22/newpyworker_plus:1.4 .
+# 3. docker push meomay22/newpyworker_plus:1.4
+# B. Update:
+# 1. Cập nhật chrome driver version 114
+# 2. Cập nhật chrome deb version 114 cho ubuntu 20.04
+FROM meomay22/newpyworker_plus:1.3
+
+USER root
+RUN apt update
+
+#Copy chrome driver version 114 from: https://chromedriver.chromium.org/downloads
+ADD ./chrome_Deb_Driver/chromedriver_114 /usr/local/bin/chromedriver
+RUN chmod +x /usr/local/bin/chromedriver
+
+#Chrome deb version 114 cho ubuntu 20.04. Tải từ: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+ADD ./chrome_Deb_Driver/google-chrome-stable_current_amd64_114.deb /chrome_Deb_Driver/chrome.deb
+RUN dpkg -i /chrome_Deb_Driver/chrome.deb || apt-get install --fix-missing -yf
+RUN rm -f /chrome_Deb_Driver/chrome.deb
+
+
+
+
