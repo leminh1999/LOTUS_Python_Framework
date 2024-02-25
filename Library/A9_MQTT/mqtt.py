@@ -1,5 +1,5 @@
 import __init
-from paho.mqtt import client as mqtt_client #pip install paho-mqtt
+from paho.mqtt import client as mqtt_client #pip install paho-mqtt==1.6.1
 import random
 import time
 

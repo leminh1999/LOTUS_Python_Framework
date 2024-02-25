@@ -62,7 +62,7 @@ if SYS.pcInfo.pcName() == "CMEV-PC157":
     logger.warning("### Not Update Lotus Framework Lite & NAS Scripts ###")
 
 if SYS.pcInfo.pcName() == "CMEV-PC157":
-  MAN.forceTaskRun(channelId=0, taskNum=0, vncNum=0, debugNum=0)
+  MAN.forceTaskRun(channelId=1, taskNum=1, vncNum=1, debugNum=1)
 
 while True:
   MAN.checkChanelConfigTableChangedByHandToUpdateScheduleList() #Kiểm tra MySQL table (channel_config) có channel nào thay đổi bằng tay không. Nếu có thì cập nhật Schedule List cho toàn bộ task con của channel đó.

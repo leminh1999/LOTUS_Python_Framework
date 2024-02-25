@@ -1,5 +1,5 @@
 import __init
-from Library.A9_MQTT.mqtt import mqttClass #pip install paho-mqtt
+from Library.A9_MQTT.mqtt import mqttClass #pip install paho-mqtt==1.6.1
 
 # #### 2. Subcribe to a topic ###
 import threading
